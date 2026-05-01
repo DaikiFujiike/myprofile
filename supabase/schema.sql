@@ -1,0 +1,12 @@
+create extension if not exists pgcrypto;
+create table if not exists profiles (id uuid primary key default gen_random_uuid(), user_id uuid unique not null references auth.users(id) on delete cascade, display_name text, created_at timestamptz default now());
+create table if not exists reflection_sessions (id uuid primary key default gen_random_uuid(), user_id uuid not null references auth.users(id) on delete cascade, title text not null default '無題の自己対話', summary text, emotional_tags text[] default '{}', action_item text, created_at timestamptz default now(), updated_at timestamptz default now());
+create table if not exists reflection_messages (id uuid primary key default gen_random_uuid(), session_id uuid not null references reflection_sessions(id) on delete cascade, user_id uuid not null references auth.users(id) on delete cascade, role text not null check (role in ('user','assistant')), content text not null, created_at timestamptz default now());
+create table if not exists action_items (id uuid primary key default gen_random_uuid(), user_id uuid not null references auth.users(id) on delete cascade, session_id uuid references reflection_sessions(id) on delete set null, action_text text not null, status text not null default 'pending' check (status in ('pending','done')), created_at timestamptz default now(), completed_at timestamptz);
+create table if not exists daily_reflection_notes (id uuid primary key default gen_random_uuid(), user_id uuid not null references auth.users(id) on delete cascade, mood_score integer check (mood_score between 1 and 10), note text, created_at timestamptz default now());
+alter table profiles enable row level security; alter table reflection_sessions enable row level security; alter table reflection_messages enable row level security; alter table action_items enable row level security; alter table daily_reflection_notes enable row level security;
+create policy "own profiles" on profiles for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "own sessions" on reflection_sessions for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "own messages" on reflection_messages for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "own action items" on action_items for all using (auth.uid()=user_id) with check (auth.uid()=user_id);
+create policy "own notes" on daily_reflection_notes for all using (auth.uid()=user_id) with check (auth.uid()=user_id);

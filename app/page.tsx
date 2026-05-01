@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function Home(){return <main className='max-w-5xl mx-auto p-8 space-y-6'><section className='card'><h1 className='text-3xl font-semibold'>SelfTalkLab</h1><p className='mt-3 text-muted'>自己対話・思考整理・行動支援アプリ</p><div className='mt-6 space-x-3'><Link className='px-4 py-2 rounded-xl bg-accent text-white' href='/signup'>利用開始</Link><Link className='px-4 py-2 rounded-xl border' href='/login'>ログイン</Link></div></section></main>}
