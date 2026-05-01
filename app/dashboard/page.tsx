@@ -1,0 +1,2 @@
+import Link from 'next/link';import { todayQuestion } from '@/lib/constants';
+export default function D(){return <main className='max-w-6xl mx-auto p-8 grid gap-6'><section className='card'><h2 className='font-medium'>今日の問い</h2><p className='mt-2'>{todayQuestion()}</p></section><section className='card'><h2>最近の対話</h2><Link href='/reflection/history' className='text-accent'>履歴を見る</Link></section><section className='card'><Link href='/reflection/new' className='px-4 py-2 rounded-xl bg-accent text-white inline-block'>新しく自己対話を始める</Link></section></main>}
