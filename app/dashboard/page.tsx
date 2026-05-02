@@ -1,2 +1,29 @@
-import Link from 'next/link';import { todayQuestion } from '@/lib/constants';
-export default function D(){return <main className='max-w-6xl mx-auto p-8 grid gap-6'><section className='card'><h2 className='font-medium'>今日の問い</h2><p className='mt-2'>{todayQuestion()}</p></section><section className='card'><h2>最近の対話</h2><Link href='/reflection/history' className='text-accent'>履歴を見る</Link></section><section className='card'><Link href='/reflection/new' className='px-4 py-2 rounded-xl bg-accent text-white inline-block'>新しく自己対話を始める</Link></section></main>}
+import { ActionItemCard } from "@/components/ActionItemCard";
+import { DailyQuestionCard } from "@/components/DailyQuestionCard";
+import { Header } from "@/components/Header";
+import { ReflectionCard } from "@/components/ReflectionCard";
+import { Sidebar } from "@/components/Sidebar";
+import Link from "next/link";
+import { reflectionSessions, todaysQuestion } from "@/lib/mockData";
+
+export default function DashboardPage() {
+  return (
+    <main>
+      <Header />
+      <Sidebar />
+      <DailyQuestionCard question={todaysQuestion} />
+      <section>
+        <h2>最近の対話</h2>
+        {reflectionSessions.slice(0, 2).map((session) => (
+          <ReflectionCard key={session.id} session={session} />
+        ))}
+      </section>
+      <ActionItemCard showOnlyPending />
+      <section>
+        <h2>今日の状態メモ導線</h2>
+        <p>いまの気分・体調・集中度を30秒で記録しましょう。</p>
+        <Link href="/reflection/new">状態メモを残す</Link>
+      </section>
+    </main>
+  );
+}

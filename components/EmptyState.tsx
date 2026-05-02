@@ -1,1 +1,3 @@
-export default function EmptyState(props:any){return <div className='card text-sm'>EmptyState</div>}
+export function EmptyState({ message }: { message: string }) {
+  return <p>{message}</p>;
+}
