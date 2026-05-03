@@ -1,7 +1,11 @@
-import { notFound } from "next/navigation";
-import { EmotionalTag } from "@/components/EmotionalTag";
-import { ReflectionDigestCard } from "@/components/ReflectionDigestCard";
-import { getSessionById } from "@/lib/mockData";
+import { notFound } from 'next/navigation';
+import { EmotionalTag } from '@/components/EmotionalTag';
+import { ReflectionDigestCard } from '@/components/ReflectionDigestCard';
+import { getSessionById, reflectionSessions } from '@/lib/mockData';
+
+export function generateStaticParams() {
+  return reflectionSessions.map(session => ({ id: session.id }));
+}
 
 export default async function ReflectionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,7 +23,7 @@ export default async function ReflectionDetailPage({ params }: { params: Promise
         <ul>
           {session.conversationLog.map((line, idx) => (
             <li key={`${session.id}-${idx}`}>
-              <strong>{line.speaker === "user" ? "あなた" : "コーチ"}:</strong> {line.message}
+              <strong>{line.speaker === 'user' ? 'あなた' : 'コーチ'}:</strong> {line.message}
             </li>
           ))}
         </ul>
@@ -34,7 +38,7 @@ export default async function ReflectionDetailPage({ params }: { params: Promise
 
       <section>
         <h3>感情タグ</h3>
-        {session.emotionalTags.map((tag) => (
+        {session.emotionalTags.map(tag => (
           <EmotionalTag key={tag} tag={tag} />
         ))}
       </section>
