@@ -66,5 +66,5 @@ export const getSessionById = (id: string) => reflectionSessions.find((s) => s.i
 
 export const toggleActionItemStatus = (items: ActionItem[], id: string) =>
   items.map((item) =>
-    item.id === id ? { ...item, status: item.status === "pending" ? "done" : "pending" } : item,
+    item.id === id ? { ...item, status: item.status === "pending" ? ("done" as const) : ("pending" as const) } : item,
   );
